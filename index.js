@@ -1,16 +1,15 @@
 const express = require("express");
-var bodyParser = require("body-parser");
-const controlador = require("./controlador");
-const cors = require("cors");
-
 const app = express();
-
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(function(req, res, next) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Request-Method", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "*");
 
-app.use(cors());
-
-app.get("/infracoes", controlador.retornaPontos);
+  next();
+});
 
 app.use("/api", require("./rotas"));
 

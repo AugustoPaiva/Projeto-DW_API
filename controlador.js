@@ -2,6 +2,17 @@ const db = require("./config/dataBase");
 
 module.exports = {
   async retornaPontos(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    ); // If needed
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With,contenttype"
+    ); // If needed
+    res.setHeader("Access-Control-Allow-Credentials", true); // If needed
+
     //essa rota serve pra retonar os pontos pra fazer o mapa de calor, muda pra o select ser na coluna quantidade da tabela fato
     const a = await db.query(
       "SELECT COUNT(logra.key_logradouro) as ocorrencias, logra.latitude, logra.longitude FROM fatoinfracao as infra INNER JOIN  dimlogradouro as logra " +
