@@ -1,4 +1,7 @@
 const express = require("express");
+const app = express();
+var cors = require("cors");
+
 const routes = express.Router();
 
 const controlador = require("./controlador");
