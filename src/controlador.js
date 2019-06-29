@@ -15,7 +15,7 @@ module.exports = {
 
     //essa rota serve pra retonar os pontos pra fazer o mapa de calor, muda pra o select ser na coluna quantidade da tabela fato
     const a = await db.query(
-      "SELECT COUNT(logra.key_logradouro) as ocorrencias, logra.latitude, logra.longitude FROM fatoinfracao as infra INNER JOIN  dimlogradouro as logra " +
+      "SELECT sum(quantidade) as ocorrencias, logra.latitude, logra.longitude FROM fatoinfracao as infra INNER JOIN  dimlogradouro as logra " +
         " on infra.key_logradouro = logra.key_logradouro GROUP BY logra.key_logradouro",
       {
         raw: true
