@@ -11,6 +11,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use("/api", require("./rotas"));
+app.use("/api", require("./src/rotas"));
 
 app.listen(process.env.PORT || 3001);
