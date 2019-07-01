@@ -23,6 +23,48 @@ module.exports = {
     );
     res.json(a[0]);
   },
+  async retornaPontosPost(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    ); // If needed
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With,contenttype"
+    ); // If needed
+    res.setHeader("Access-Control-Allow-Credentials", true); // If needed
+
+    let where = "";
+    const ano = req.body.ano;
+    console.log(ano);
+    console.log(req.body.bairro);
+    let bairros = "(";
+    //formatando texto
+    req.body.bairros.array.forEach(element => {
+      bairros += element + ",";
+    });
+    bairros = bairros.substring(0, bairros.length - 1) + ")";
+
+    //criando where
+    where += ano != "" ? ` and dimdata.ano_id == ${dimdata.ano_id} ` : "";
+    where += bairros != "" ? ` and UPPER(bairro.nome) in ${bairro.nome} ` : "";
+
+    console.log(where);
+    //essa rota serve pra retonar os pontos pra fazer o mapa de calor, muda pra o select ser na coluna quantidade da tabela fato
+    const a = await db.query(
+      `SELECT SUM(quantidade) AS ocorrencias, logra.latitude, logra.longitude
+        FROM fatoinfracao AS infra
+            JOIN dimlogradouro AS logra ON infra.key_logradouro = logra.key_logradouro
+            JOIN dim bairro AS bairro on infra.key_bairro = bairro.key_bairro
+            JOIN dimdata ON infra.key_data = dimdata.key_data
+        ${where}`,
+      {
+        raw: true
+      }
+    );
+    res.json(a[0]);
+  },
 
   async valorArrecadado(req, res) {
     //tabela pra saber o valor arrecadado, ai tem que relevar em consideração que vai receber ano e bairro
