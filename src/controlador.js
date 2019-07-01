@@ -24,31 +24,21 @@ module.exports = {
     res.json(a[0]);
   },
   async retornaPontosPost(req, res) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-    ); // If needed
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With,contenttype"
-    ); // If needed
-    res.setHeader("Access-Control-Allow-Credentials", true); // If needed
-
+    console.log("oi");
     let where = "";
     const ano = req.body.ano;
     console.log(ano);
     console.log(req.body.bairro);
     let bairros = "(";
     //formatando texto
-    req.body.bairros.array.forEach(element => {
-      bairros += element + ",";
+    req.body.bairro.forEach(element => {
+      bairros += `'${element}',`;
     });
     bairros = bairros.substring(0, bairros.length - 1) + ")";
 
     //criando where
-    where += ano != "" ? ` and dimdata.ano_id == ${dimdata.ano_id} ` : "";
-    where += bairros != "" ? ` and UPPER(bairro.nome) in ${bairro.nome} ` : "";
+    where += ano != "" ? ` and dimdata.ano_id = ${ano} ` : "";
+    where += bairros != "" ? ` and UPPER(bairro.nome) in ${bairros} ` : "";
 
     console.log(where);
     //essa rota serve pra retonar os pontos pra fazer o mapa de calor, muda pra o select ser na coluna quantidade da tabela fato
@@ -56,7 +46,7 @@ module.exports = {
       `SELECT SUM(quantidade) AS ocorrencias, logra.latitude, logra.longitude
         FROM fatoinfracao AS infra
             JOIN dimlogradouro AS logra ON infra.key_logradouro = logra.key_logradouro
-            JOIN dim bairro AS bairro on infra.key_bairro = bairro.key_bairro
+            JOIN dimbairro AS bairro ON infra.key_bairro = bairro.key_bairro
             JOIN dimdata ON infra.key_data = dimdata.key_data
         ${where}`,
       {
