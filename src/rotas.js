@@ -4,10 +4,11 @@ const controlador = require("./controlador");
 
 routes.get("/infracoes", controlador.retornaPontos);
 routes.post("/infracoes", controlador.retornaPontosPost);
-routes.get("/valorMulta/:anoInicial/:anoFinal", controlador.valorArrecadado);
-routes.get("/topInfracao", controlador.infraRecorrente);
-routes.get("/quantidadeInfracoes", controlador.QuantidadeInfracoes);
-routes.get("/horaPico", controlador.horaPico);
-routes.get("/infracoes", controlador.retornaPontos);
+routes.post("/valorMulta", controlador.valorArrecadado);
+routes.post("/topInfracao", controlador.infraRecorrente);
+routes.post("/quantidadeInfracoes", controlador.QuantidadeInfracoes);
+routes.post("/horaPico", controlador.horaPico);
+routes.post("/pontosAplicados", controlador.pontosAplicados);
+routes.post('/infraSemestre', controlador.infraSemestre)
 
 module.exports = routes;
